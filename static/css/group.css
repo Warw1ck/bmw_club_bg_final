@@ -1,0 +1,44 @@
+.group{
+    margin-bottom: 0 !important;
+    border-bottom: 0 !important;
+}
+.group:last-child{
+    border-bottom: 1px solid rgba(7, 7, 7, 0.24) !important;
+}
+.profilepic .profile_img{
+    background: none ;
+    height: 55px;
+    width: 55px;
+}
+.postTime{
+    font-weight: 700;
+    text-transform: none;
+    margin-left: 0;
+}
+.join{
+    background-color: lightskyblue;
+    border: none;
+    font-weight: bold;
+    color: white;
+    padding: 1em;
+    border-radius: 0.3em;
+
+}
+.group-info{
+    display: flex;
+    align-items: center;
+}
+.groupDetails{
+    justify-content: space-between;
+}
+.title-group{
+    margin-bottom: 50px !important;
+}
+.title-group .profilepic .profile_img{
+    height: 200px !important;
+    width: 200px;
+}
+.group-title{
+    font-weight: bold;
+    font-size: 30px;
+}

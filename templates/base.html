@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Starts Head Section -->
+<head>
+    <link rel="stylesheet"
+          href="/static/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="/static/images/bmw-m-series-logo-5469FBA090-seeklogo.com.png">
+    <title>BMW CLUB</title>
+</head>
+<!-- End Head Section -->
+
+<!-- Starts Body Section -->
+<body>
+
+<!-- Starts Header Section with Navigation Bar -->
+<header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <!-- Link to Home Page -->
+                <a href="{% url 'home' %}">
+                    <img width="100px" src="/static/images/bmw-m-series-logo-5469FBA090-seeklogo.com.png" alt="img1">
+                </a>
+
+                <!-- Link to Home Page -->
+                <a class="home" href="{% url 'home' %}">
+                    <i>BMW CLUB BG</i>
+                </a>
+            </div>
+
+            <div class="nav-links">
+                <ul class="nav-group">
+                    {% if request.user.is_authenticated %}
+
+                        <li class="nav-item">
+
+                            <!-- Link to Add Photo Page -->
+                            <a href="{% url 'home' %}">
+                                <i>Home </i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+
+                            <!-- Link to Create Post -->
+                            <a href="{% url 'add_post' %}">
+                                <i>Create Post</i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+
+                            <!-- Link to Register Page -->
+                            <a href="">
+                                <i>Groups</i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'logout' %}">
+                                <i>Logout</i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+
+                            <!-- Link to Profile Page -->
+                            <a href="{% url 'details_profile' username=user.username %}">
+                                <i>Profile</i>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a href="{% url 'login' %}">
+                                <i>Profile</i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'register' %}">
+                                <i>Register</i>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<!-- End Header Section with Navigation Bar -->
+{% block content %}
+{% endblock %}
+<!-- Start Footer Section -->
+<div class="footer">
+		<span class="footer-section">
+			© 2022 VALENTIN PROJECT FOR PYTHON WEB MODULE
+		</span>
+</div>
+<!-- End Footer Section -->
+
+</body>
+</html>

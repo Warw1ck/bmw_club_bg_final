@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Starts Main Section -->
+<main>
+    <div class="club-intro">
+        <img src="/static/images/e30-big-logo.png" height="300px" alt="img2">
+        <p>
+            Platform for BMW owners to connect, learn, and share their passion for BMW vehicles. Users can engage in meaningful discussions, gain valuable insights, and build a strong community centered around our love for BMWs.
+
+        </p>
+    </div>
+    <!-- Start Login Section-->
+    <div class="login-register-div">
+        <div class="login-register-box">
+            <h1>BMW Club BG</h1>
+
+            <!-- Start Login Form-->
+            <form action="#" method="post">
+                {{ form.as_p }}
+                {% csrf_token %}
+
+                <!-- Login Button-->
+                <button type="submit">Log in</button>
+            </form>
+            <!-- End Login Form -->
+
+        </div>
+        <div class="second-option">
+
+            <!-- Link to Register Page-->
+            <p>Don't have account? <a href="{% url 'register' %}">Register</a></p>
+        </div>
+    </div>
+    <!-- End Login Section-->
+
+</main>
+<!-- End Main Section -->
+
+{% endblock %}
