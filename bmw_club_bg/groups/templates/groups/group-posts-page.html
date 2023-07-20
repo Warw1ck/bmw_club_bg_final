@@ -1,238 +1,219 @@
 {% extends 'base.html' %}
 {% block content %}
-<!-- Starts Main Section -->
-<main>
-    <div class="container">
-        <div class="col-9">
-            <div class="card group title-group">
+    <!-- Starts Main Section -->
+    <main>
+        <div class="container">
+            <div class="col-9">
+                <div class="card group title-group">
 
-                <!-- Start User Details and Image Location -->
-                <div class="top">
-                    <div class="userDetails groupDetails">
-                        <div class="group-info">
-                            <a href="#">
-                                <div class="profilepic">
-                                    <div class="profile_img">
-                                        <div class="image">
-                                            <img src="https://cdn.dribbble.com/users/146798/screenshots/4834972/media/66cdcdf0b763f8e1bcdd377821db280c.png?resize=400x0" alt="img8">
+                    <!-- Start User Details and Image Location -->
+                    <div class="top">
+                        <div class="userDetails groupDetails">
+                            <div class="group-info">
+                                <a href="#">
+                                    <div class="profilepic">
+                                        <div class="profile_img">
+                                            <div class="image">
+                                                <img src="/media/{{ group.image }}" alt="img8">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
-                            <div>
-                                <div class="edit-delete-btns">
+                                </a>
+                                <div>
+                                    <div class="edit-delete-btns">
+                                        {% if user == group.created_by %}
+                                            <!-- Link to Edit Pet Photo Page -->
+                                            <a href="{% url 'group_edit' group.pk %}">
+                                                <img class="edit-img" src="/static/images/edit-pen-icon-6.jpg"
+                                                     alt="edit button">
+                                            </a>
 
-                                    <!-- Link to Edit Pet Photo Page -->
-                                    <a href="#">
-                                        <img class="edit-img" src="/static/images/edit-pen-icon-6.jpg"
-                                             alt="edit button">
-                                    </a>
-                                
-                                    <!-- Link to Delete Pet Photo Page -->
-                                    <a href="#">
-                                        <img class="bin-img" src="/static/images/icon-remove-22.jpg" alt="bin button">
-                                    </a>
+                                            <!-- Link to Delete Pet Photo Page -->
+                                            <a href="{% url 'group_delete' group.pk %}">
+                                                <img class="bin-img" src="/static/images/icon-remove-22.jpg"
+                                                     alt="bin button">
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <h3>
+                                        <!-- Link to Group Profile Page -->
+                                        <a href="#" class="group-title">
+                                            <!-- if user has first name and last name -->
+
+                                            {{ group.name }}
+
+
+                                            <!-- else -->
+                                            <!-- show user username -->
+
+                                        </a>
+                                            <span class="postTime">.<strong id="members{{ group.pk }}">{{ group.users.count }}</strong> Members</span>
+                                        <br>
+                                        <!-- if the group has info -->
+                                        <span>{{ group.description }}</span>
+                                        <p>
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                                                <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                                <path d="M86.4 5.5L61.8 47.6C58 54.1 56 61.6 56 69.2V72c0 22.1 17.9 40 40 40s40-17.9 40-40V69.2c0-7.6-2-15-5.8-21.6L105.6 5.5C103.6 2.1 100 0 96 0s-7.6 2.1-9.6 5.5zm128 0L189.8 47.6c-3.8 6.5-5.8 14-5.8 21.6V72c0 22.1 17.9 40 40 40s40-17.9 40-40V69.2c0-7.6-2-15-5.8-21.6L233.6 5.5C231.6 2.1 228 0 224 0s-7.6 2.1-9.6 5.5zM317.8 47.6c-3.8 6.5-5.8 14-5.8 21.6V72c0 22.1 17.9 40 40 40s40-17.9 40-40V69.2c0-7.6-2-15-5.8-21.6L361.6 5.5C359.6 2.1 356 0 352 0s-7.6 2.1-9.6 5.5L317.8 47.6zM128 176c0-17.7-14.3-32-32-32s-32 14.3-32 32v48c-35.3 0-64 28.7-64 64v71c8.3 5.2 18.1 9 28.8 9c13.5 0 27.2-6.1 38.4-13.4c5.4-3.5 9.9-7.1 13-9.7c1.5-1.3 2.7-2.4 3.5-3.1c.4-.4 .7-.6 .8-.8l.1-.1 0 0 0 0s0 0 0 0s0 0 0 0c3.1-3.2 7.4-4.9 11.9-4.8s8.6 2.1 11.6 5.4l0 0 0 0 .1 .1c.1 .1 .4 .4 .7 .7c.7 .7 1.7 1.7 3.1 3c2.8 2.6 6.8 6.1 11.8 9.5c10.2 7.1 23 13.1 36.3 13.1s26.1-6 36.3-13.1c5-3.5 9-6.9 11.8-9.5c1.4-1.3 2.4-2.3 3.1-3c.3-.3 .6-.6 .7-.7l.1-.1c3-3.5 7.4-5.4 12-5.4s9 2 12 5.4l.1 .1c.1 .1 .4 .4 .7 .7c.7 .7 1.7 1.7 3.1 3c2.8 2.6 6.8 6.1 11.8 9.5c10.2 7.1 23 13.1 36.3 13.1s26.1-6 36.3-13.1c5-3.5 9-6.9 11.8-9.5c1.4-1.3 2.4-2.3 3.1-3c.3-.3 .6-.6 .7-.7l.1-.1c2.9-3.4 7.1-5.3 11.6-5.4s8.7 1.6 11.9 4.8l0 0 0 0 0 0 .1 .1c.2 .2 .4 .4 .8 .8c.8 .7 1.9 1.8 3.5 3.1c3.1 2.6 7.5 6.2 13 9.7c11.2 7.3 24.9 13.4 38.4 13.4c10.7 0 20.5-3.9 28.8-9V288c0-35.3-28.7-64-64-64V176c0-17.7-14.3-32-32-32s-32 14.3-32 32v48H256V176c0-17.7-14.3-32-32-32s-32 14.3-32 32v48H128V176zM448 394.6c-8.5 3.3-18.2 5.4-28.8 5.4c-22.5 0-42.4-9.9-55.8-18.6c-4.1-2.7-7.8-5.4-10.9-7.8c-2.8 2.4-6.1 5-9.8 7.5C329.8 390 310.6 400 288 400s-41.8-10-54.6-18.9c-3.5-2.4-6.7-4.9-9.4-7.2c-2.7 2.3-5.9 4.7-9.4 7.2C201.8 390 182.6 400 160 400s-41.8-10-54.6-18.9c-3.7-2.6-7-5.2-9.8-7.5c-3.1 2.4-6.8 5.1-10.9 7.8C71.2 390.1 51.3 400 28.8 400c-10.6 0-20.3-2.2-28.8-5.4V480c0 17.7 14.3 32 32 32H416c17.7 0 32-14.3 32-32V394.6z"/>
+                                            </svg>
+                                            <span>Created {{ group.date_of_creation }}</span>
+                                        </p>
+                                    </h3>
                                 </div>
+                            </div>
+                            {% if user != group.created_by %}
+                                {% if user in group.users.all %}
+                                    <button class="join" data-group-id="{{ group.pk }}" data-action="leave" data-details="details">
+                                        Leave
+                                    </button>
+                                {% else %}
+                                    <button class="join" style="background-color: #A2FF86" data-group-id="{{ group.pk }} " data-details="details"
+                                       data-action="join">
+                                        Join
+                                    </button>
+                                {% endif %}
+                            {% endif %}
+
+                            </h3>
+                        </div>
+                    </div>
+                    <!-- End User Details and Image Location -->
+                    <!-- Photo description -->
+
+                </div>
+
+                <!-- Start Searchbar Form -->
+                <form class="searchbar" method="get">
+                    <input type="text" name="search_query" value="{{ search_query }}"
+                           placeholder="Search by Username...">
+                    <button type="submit">
+                        <img src="/static/images/search.png" height="18" alt="img2">
+                    </button>
+                </form>
+                <!-- End Searchbar Form -->
+
+                <!-- Start Pet Photos Post Section -->
+                <!-- Start First Pet Photo Post -->
+                {% for post in posts %}
+                    <!-- Start Pet Photos Post Section -->
+                    <!-- Start First Pet Photo Post -->
+                    <div class="card" id="{{ post.id }}">
+
+                        <!-- Start User Details and Image Location -->
+                        <div class="top">
+                            <div class="userDetails">
+                                <!-- Link to User Profile Page -->
+                                <a href="{% url 'details_profile' username=post.author.username %}">
+                                    <div class="profilepic">
+                                        <div class="profile_img">
+                                            <div class="image">
+                                                {% if post.author.profile.image %}
+                                                    <img src="/media/{{ post.author.profile.image }}" alt="img8">
+                                                {% else %}
+                                                    <img src="/static/images/person.png" alt="img8">
+                                                {% endif %}                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
                                 <h3>
-                                    <!-- Link to Group Profile Page -->
-                                    <a href="#" class="group-title">
-                                        <!-- if user has first name and last name -->
-                                        
-                                         E30
-                                        
-                                        
-                                        <!-- else -->
-                                        <!-- show user username -->
-                                        
-                                    </a>
-                                    <span class="postTime">.200 Members</span>
-                                    <br>
-                                    <!-- if the group has info -->
-                                    <span>This is very cool group!</span>
-                                    <p>
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M86.4 5.5L61.8 47.6C58 54.1 56 61.6 56 69.2V72c0 22.1 17.9 40 40 40s40-17.9 40-40V69.2c0-7.6-2-15-5.8-21.6L105.6 5.5C103.6 2.1 100 0 96 0s-7.6 2.1-9.6 5.5zm128 0L189.8 47.6c-3.8 6.5-5.8 14-5.8 21.6V72c0 22.1 17.9 40 40 40s40-17.9 40-40V69.2c0-7.6-2-15-5.8-21.6L233.6 5.5C231.6 2.1 228 0 224 0s-7.6 2.1-9.6 5.5zM317.8 47.6c-3.8 6.5-5.8 14-5.8 21.6V72c0 22.1 17.9 40 40 40s40-17.9 40-40V69.2c0-7.6-2-15-5.8-21.6L361.6 5.5C359.6 2.1 356 0 352 0s-7.6 2.1-9.6 5.5L317.8 47.6zM128 176c0-17.7-14.3-32-32-32s-32 14.3-32 32v48c-35.3 0-64 28.7-64 64v71c8.3 5.2 18.1 9 28.8 9c13.5 0 27.2-6.1 38.4-13.4c5.4-3.5 9.9-7.1 13-9.7c1.5-1.3 2.7-2.4 3.5-3.1c.4-.4 .7-.6 .8-.8l.1-.1 0 0 0 0s0 0 0 0s0 0 0 0c3.1-3.2 7.4-4.9 11.9-4.8s8.6 2.1 11.6 5.4l0 0 0 0 .1 .1c.1 .1 .4 .4 .7 .7c.7 .7 1.7 1.7 3.1 3c2.8 2.6 6.8 6.1 11.8 9.5c10.2 7.1 23 13.1 36.3 13.1s26.1-6 36.3-13.1c5-3.5 9-6.9 11.8-9.5c1.4-1.3 2.4-2.3 3.1-3c.3-.3 .6-.6 .7-.7l.1-.1c3-3.5 7.4-5.4 12-5.4s9 2 12 5.4l.1 .1c.1 .1 .4 .4 .7 .7c.7 .7 1.7 1.7 3.1 3c2.8 2.6 6.8 6.1 11.8 9.5c10.2 7.1 23 13.1 36.3 13.1s26.1-6 36.3-13.1c5-3.5 9-6.9 11.8-9.5c1.4-1.3 2.4-2.3 3.1-3c.3-.3 .6-.6 .7-.7l.1-.1c2.9-3.4 7.1-5.3 11.6-5.4s8.7 1.6 11.9 4.8l0 0 0 0 0 0 .1 .1c.2 .2 .4 .4 .8 .8c.8 .7 1.9 1.8 3.5 3.1c3.1 2.6 7.5 6.2 13 9.7c11.2 7.3 24.9 13.4 38.4 13.4c10.7 0 20.5-3.9 28.8-9V288c0-35.3-28.7-64-64-64V176c0-17.7-14.3-32-32-32s-32 14.3-32 32v48H256V176c0-17.7-14.3-32-32-32s-32 14.3-32 32v48H128V176zM448 394.6c-8.5 3.3-18.2 5.4-28.8 5.4c-22.5 0-42.4-9.9-55.8-18.6c-4.1-2.7-7.8-5.4-10.9-7.8c-2.8 2.4-6.1 5-9.8 7.5C329.8 390 310.6 400 288 400s-41.8-10-54.6-18.9c-3.5-2.4-6.7-4.9-9.4-7.2c-2.7 2.3-5.9 4.7-9.4 7.2C201.8 390 182.6 400 160 400s-41.8-10-54.6-18.9c-3.7-2.6-7-5.2-9.8-7.5c-3.1 2.4-6.8 5.1-10.9 7.8C71.2 390.1 51.3 400 28.8 400c-10.6 0-20.3-2.2-28.8-5.4V480c0 17.7 14.3 32 32 32H416c17.7 0 32-14.3 32-32V394.6z"/></svg>
-                                        <span>Created May 7, 2008</span>
-                                    </p>
-                                    
+                                    <!-- Link to User Profile Page -->
 
+                                    <a href="{% url 'details_profile' username=post.author.username %}">
+                                        {% if post.author.first_name and post.author.last_name %}
+                                            {{ post.author.first_name }} {{ post.author.last_name }}
+                                        {% else %}
+                                            {{ post.author.username }}
+                                        {% endif %}
+                                    </a>
+                                    <br>
+                                    <!-- if the photo has location -->
+                                    <a href="{% url 'details_profile' username=post.author.username %}">
+                                        @{{ post.author.username }}
+                                    </a>
+                                    <span>{{ post.location }}</span>
+                                    <!-- Date of Publication -->
+                                    <h5 class="postTime">{{ post.date|date:"d/m/Y" }}</h5>
+
+                                </h3>
                             </div>
                         </div>
-                        
-                        <!-- Link to User Profile Page -->
-                        
-                            <button class="join">
-                                Join
-                            </button>
-
-                        </h3>
-                    </div>
-                </div>
-                <!-- End User Details and Image Location -->
-                <!-- Photo description -->
-                
-            </div>
-
-            <!-- Start Searchbar Form -->
-            <form class="searchbar" method="post">
-                <input type="text" placeholder="Search by Username...">
-                <button>
-                    <img src="/static/images/search.png" height="18" alt="img2">
-                </button>
-            </form>
-            <!-- End Searchbar Form -->
-
-            <!-- Start Pet Photos Post Section -->
-            <!-- Start First Pet Photo Post -->
-            <div class="card">
-
-                <!-- Start User Details and Image Location -->
-                <div class="top">
-                    <div class="userDetails">
-                        <!-- Link to User Profile Page -->
-                        <a href="#">
-                            <div class="profilepic">
-                                <div class="profile_img">
-                                    <div class="image">
-                                        <img src="/static/images/person.png" alt="img8">
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                        <h3>
-                            <!-- Link to User Profile Page -->
-                            <a href="#">
-                                <!-- if user has first name and last name -->
-                                Valentin Obretenov
-                                <!-- else -->
-                                <!-- show user username -->
+                        <!-- End User Details and Image Location -->
+                        <!-- Photo description -->
+                        <div class="decription">
+                            <p class="pet-details">{{ post.content }}</p>
+                            <a style="color: rgb(163, 163, 163); font-weight: 700;;"
+                               href="{% url 'details_post' post.pk %}?scroll_position={{ scroll_position }}">
+                                See More
                             </a>
-                            <br>
-                            <!-- if the photo has location -->
-                            <a href="#">@warwick</a>
-                            <span>Bansko, Bulgaria</span>
-                            <!-- Date of Publication -->
-                            <h5 class="postTime">19/09/2022</h5>
+                            {% for group in post.groups.all %}
+                                <a href="#">
+                                    <p class="message">
+                                        <b>#{{ group.name }}</b>
 
-                        </h3>
-                    </div>
-                </div>
-                <!-- End User Details and Image Location -->
-                <!-- Photo description -->
-                <div class="decription">
-                    <p class="pet-details">This is my car</p>
-                 <!-- Start Tagged Pets -->
-                    <!-- Link to First Tagged Pet Details Page-->
-                    <a href="#">
-                        <p class="message">
-                            <b>#E30</b>
-                        </p>
-                    </a>
+                                    </p>
+                                </a>
+                            {% endfor %}
 
-                    <!-- Link to Second Tagged Pet Details Page-->
-                    <a href="#">
-                        <p class="message">
-                            <b>#3series</b>
-                        </p>
-                    </a>
-                    <!-- End Tagged Pets -->
-                </div>
-                
-                <!-- Start Pet Photo -->
-                <div class="imgBx" id="place the id of the photo here">
-                    <img src="https://www.truck1.bg/img/Druga_tehnika_Lek_avtomobil_Bmw_M3_E30-xxl-8045/8045_5762453848301.jpg" alt="post" class="cover">
-                </div>
-                <!-- End Pet Photo -->
+                        </div>
 
-                <!-- Start Like and Share Buttons -->
-                <div class="bottom">
-                    <div class="actionBtns">
-                        <div class="left">
-                            <!-- Start Like Button -->
-                            <span class="heart">
-									<a href="#">
-										<!-- if user has liked the photo -->
-                                        <svg style="color: red"
-                                             xmlns="http://www.w3.org/2000/svg"
-                                             width="24"
-                                             height="24"
-                                             fill="currentColor"
-                                             class="bi bi-heart-fill"
-                                             viewBox="0 0 16 16">
-                                            <!-- Coordinate path -->
-                                            <path fill-rule="evenodd"
-                                                  d="M8 1.314C12.438-3.248 23.534 4.735
-                                                  8 15-7.534 4.736 3.562-3.248 8 1.314z"
-                                                  fill="red">
+                        <div class="imgBx" id="place the id of the photo here">
+                            <img src="{{ post.image_url }}"
+                                 alt="post" class="cover">
+                        </div>
 
+                        <!-- Start Like and Share Buttons -->
+                        <div class="bottom">
+                            <div class="actionBtns">
+                                <div class="left">
+                                    <span class="heart like-container" data-post-id="{{ post.pk }}">
+                                            <button class="like-button" data-post-id="{{ post.pk }}"
+                                                    data-action="{% if post in user.liked_posts.all %}dislike{% else %}like{% endif %}"
+                                                    style="background-color: transparent; border: none;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                     fill="currentColor"
+                                                     class="bi {% if post in user.liked_posts.all %}bi-heart-fill{% else %}bi-heart{% endif %}"
+                                                     viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd " id="heart-icon{{ post.id }}"
+                                                          d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                                                          fill="{% if post in user.liked_posts.all %}red{% else %}black{% endif %}">
+
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                    </span>
+
+                                    <a onclick="copyToClipboard('{{ request.META.HTTP_REFERER }}#{{ post.pk }}')">
+                                        <svg aria-label="Share Post" class="_8-yf5 " color="#262626" fill="#262626"
+                                             height="24" role="img" viewBox="0 0 48 48" width="24">
+                                            <path d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3
+                                                    3.5.1 4S0 5.2.4 5.7l15.9 15.6 5.5 22.6c.1.6.6
+                                                    1 1.2 1.1h.2c.5 0 1-.3
+                                                    1.3-.7l23.2-39c.4-.4.4-1 .1-1.5zM5.2
+                                                    6.1h35.5L18 18.7 5.2 6.1zm18.7
+                                                    33.6l-4.4-18.4L42.4 8.6 23.9 39.7z">
                                             </path>
                                         </svg>
-                                        <!-- else -->
-                                        <svg aria-label="Like"
-                                             color="#262626"
-                                             fill="#262626"
-                                             height="24"
-                                             role="img"
-                                             viewBox="0 0 48 48"
-                                             width="24">
-                                        <!-- Coordinate path -->
-                                        <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4
-                                                    11.5 0 6.8-5.9 11-11.5 16S25 41.3 24
-                                                    41.9c-1.1-.7-4.7-4-9.5-8.3-5.7-5-11.5-9.2-11.5-16C3
-                                                    11.3 7.7 6.1 13.4 6.1c4.2 0 6.5 2 8.1 4.3
-                                                    1.9 2.6 2.2 3.9 2.5 3.9.3 0 .6-1.3 2.5-3.9
-                                                    1.6-2.3 3.9-4.3 8.1-4.3m0-3c-4.5 0-7.9
-                                                    1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1
-                                                    0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3
-                                                    1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3
-                                                    1.1.5 1.6.5.6 0 1.1-.2 1.6-.5 1-.6 2.8-2.2
-                                                    7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6
-                                                    48 25 48 17.6c0-8-6-14.5-13.4-14.5z">
-                                        </path>
-                                    </svg>
-								</a>
-								</span>
-                            <!-- End Like Button -->
-                            
-                            <!-- Start Share Button -->
-                            <a href="">
-                                <svg aria-label="Share Post" class="_8-yf5 " color="#262626" fill="#262626"
-                                     height="24" role="img" viewBox="0 0 48 48" width="24">
-                                    <path d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3
-										3.5.1 4S0 5.2.4 5.7l15.9 15.6 5.5 22.6c.1.6.6
-										1 1.2 1.1h.2c.5 0 1-.3
-										1.3-.7l23.2-39c.4-.4.4-1 .1-1.5zM5.2
-										6.1h35.5L18 18.7 5.2 6.1zm18.7
-										33.6l-4.4-18.4L42.4 8.6 23.9 39.7z">
-                                    </path>
-                                </svg>
-                            </a>
-                            <!-- End Share Button -->
-                            <a href="">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M123.6 391.3c12.9-9.4 29.6-11.8 44.6-6.4c26.5 9.6 56.2 15.1 87.8 15.1c124.7 0 208-80.5 208-160s-83.3-160-208-160S48 160.5 48 240c0 32 12.4 62.8 35.7 89.2c8.6 9.7 12.8 22.5 11.8 35.5c-1.4 18.1-5.7 34.7-11.3 49.4c17-7.9 31.1-16.7 39.4-22.7zM21.2 431.9c1.8-2.7 3.5-5.4 5.1-8.1c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208s-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6c-15.1 6.6-32.3 12.6-50.1 16.1c-.8 .2-1.6 .3-2.4 .5c-4.4 .8-8.7 1.5-13.2 1.9c-.2 0-.5 .1-.7 .1c-5.1 .5-10.2 .8-15.3 .8c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c4.1-4.2 7.8-8.7 11.3-13.5c1.7-2.3 3.3-4.6 4.8-6.9c.1-.2 .2-.3 .3-.5z"/></svg>
-                            </a>
+                                    </a>
+                                    <a href="{% url 'details_post' post.pk %}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 512 512">
+                                            <path d="M123.6 391.3c12.9-9.4 29.6-11.8 44.6-6.4c26.5 9.6 56.2 15.1 87.8 15.1c124.7 0 208-80.5 208-160s-83.3-160-208-160S48 160.5 48 240c0 32 12.4 62.8 35.7 89.2c8.6 9.7 12.8 22.5 11.8 35.5c-1.4 18.1-5.7 34.7-11.3 49.4c17-7.9 31.1-16.7 39.4-22.7zM21.2 431.9c1.8-2.7 3.5-5.4 5.1-8.1c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208s-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6c-15.1 6.6-32.3 12.6-50.1 16.1c-.8 .2-1.6 .3-2.4 .5c-4.4 .8-8.7 1.5-13.2 1.9c-.2 0-.5 .1-.7 .1c-5.1 .5-10.2 .8-15.3 .8c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c4.1-4.2 7.8-8.7 11.3-13.5c1.7-2.3 3.3-4.6 4.8-6.9c.1-.2 .2-.3 .3-.5z"/>
+                                        </svg>
+                                    </a>
+
+                                </div>
+                            </div>
+
+                            <div class="comment-like-info">
+                                <p class="likes"><strong id="numLike{{ post.pk }}">{{ post.likes.count }}</strong> likes
+                                </p>
+                                <p class="likes"><strong>{{ post.comments.count }}</strong> comments</p>
+                            </div>
+
 
                         </div>
                     </div>
-                    <!-- End Like and Share Buttons -->
-
-                    <!-- Number of Likes per Photo -->
-                    <div class="comment-like-info">
-                        <p class="likes">203 likes</p>
-                        <p class="likes">10 commends</p>
-                    </div>
-                    
-
-                    
-
-                    
-
-                </div>
+                {% endfor %}
             </div>
-            <!-- End First Pet Photo Post -->
-
-            <!-- End Pet Photos Post Section -->
-
         </div>
-    </div>
-</main>
+    </main>
 {% endblock %}

@@ -10,6 +10,7 @@ urlpatterns = [
     path('authentication/', include('bmw_club_bg.accounts.urls')),
     path('groups/', include('bmw_club_bg.groups.urls')),
     path('profile/', include('bmw_club_bg.profiles.urls')),
+    path('notifications/', include('bmw_club_bg.notifications.urls')),
 
 ]
 if settings.DEBUG:

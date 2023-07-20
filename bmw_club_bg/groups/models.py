@@ -15,6 +15,7 @@ class Group(models.Model):
     date_of_creation = models.DateTimeField(auto_now_add=True)
     posts = models.ManyToManyField(Post, related_name='groups')
     users = models.ManyToManyField(User, related_name='user')
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_groups', null=True)
 
     def __str__(self):
         # Customize the name of the group as needed

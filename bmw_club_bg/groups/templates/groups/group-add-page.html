@@ -3,22 +3,12 @@
 <main>
 
     <div class="edit-delete edit-photo">
-        <h2>Add pet</h2>
+        <h2>Create Group</h2>
 
-        <form action="#">
-            <p>
-                <label for="pet-name">Pet name: </label>
-                <input type="text" placeholder="Pet name">
-            </p>
-            <p>
-                <label for="pet-date">Date of birth: </label>
-                <input type="date">
-            </p>
-            <p>
-                <label for="pet-image">Link to image: </label>
-                <input type="text" placeholder="Link to image">
-            </p>
-            <button class="add-btn" type="submit">Add Pet</button>
+        <form action="#" method="post" enctype="multipart/form-data">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <button class="add-btn" type="submit">Create</button>
         </form>
 
     </div>

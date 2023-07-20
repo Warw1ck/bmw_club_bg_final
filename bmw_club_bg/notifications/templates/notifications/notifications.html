@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+    <main>
+        <div class="container">
+            <div class="col-9">
+                {% for notification in notifications %}
+                    <div class="card group notification " id="notification-{{ notification.id }}">
+
+                        <div class="top">
+                            <div class="userDetails groupDetails">
+                                <div class="group-info">
+                                    <a href="#">
+                                        <div class="profilepic">
+                                            <div class="profile_img">
+                                                <div class="image">
+                                                    <img src="/media/{{ notification.user_like.profile.image }}"
+                                                         alt="img8">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div>
+
+                                        <h3>
+                                            <h2>
+                                                <a href="{% url 'details_profile' username=notification.user_like.username %}">
+                                                    {{ notification.user_like }}
+                                                </a>
+                                                - {{ notification.content }}
+
+
+                                            </h2>
+                                        </h3>
+                                    </div>
+                                </div>
+
+
+                                <button class="notification-link" style="background-color: transparent; border: none;"  data-notification-id="{{ notification.id }}">
+                                    {% if notification.is_read %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"
+                                             fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                  d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                                                  fill="red"></path>
+                                        </svg>
+                                    {% else %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34"
+                                             fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                  d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                                                  fill="currentColor"></path>
+                                        </svg>
+                                    {% endif %}
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </main>
+
+
+{% endblock %}

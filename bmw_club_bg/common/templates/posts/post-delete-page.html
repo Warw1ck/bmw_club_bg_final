@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+    <main>
+
+        <!-- Starts Edit Photo Section -->
+        <div class="edit-delete edit-photo">
+            <h2>Delete post</h2>
+
+            <!-- Starts Edit Photo Form -->
+            <form action="{% url 'delete_post' post.pk %}" method="post">
+                <p>
+                    <label for="id_content">Content:</label>
+                    <textarea name="content" cols="40" rows="10" id="id_content" disabled>{{ object.content }}</textarea>
+
+
+                </p>
+                <p>
+                    <label for="id_location">Location:</label>
+                    <input type="text" name="location" value="{{ object.location }}" maxlength="20" id="id_location" disabled>
+
+
+                </p>
+                <p>
+                    <label for="id_image_url">Image url:</label>
+                    <input type="url" name="image_url" value="{{ object.image_url }}" maxlength="200" required=""
+                           id="id_image_url" disabled>
+
+
+                </p>
+                {% csrf_token %}
+                <button class="edit-btn" type="submit">Delete Post</button>
+            </form>
+            <!-- End Edit Photo Form -->
+
+        </div>
+        <!-- End Edit Photo Section -->
+
+    </main>
+{% endblock %}

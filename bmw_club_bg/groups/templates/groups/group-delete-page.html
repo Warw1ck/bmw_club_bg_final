@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<main>
+
+    <div class="edit-delete edit-photo">
+
+
+        <form action="#" method="post" >
+            <h2>Really wanna delete {{ object.name }}?</h2>
+            {% csrf_token %}
+            <button class="add-btn" type="submit">Delete</button>
+        </form>
+
+    </div>
+
+</main>
+
+{% endblock %}

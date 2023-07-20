@@ -19,7 +19,16 @@
     background-color: lightskyblue;
     border: none;
     font-weight: bold;
-    color: white;
+    color: white !important;
+    padding: 1em;
+    border-radius: 0.3em;
+
+}
+.create{
+    background-color: lightskyblue;
+    border: none;
+    font-weight: bold;
+    color: white !important;
     padding: 1em;
     border-radius: 0.3em;
 

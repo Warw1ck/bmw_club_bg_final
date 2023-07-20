@@ -52,9 +52,6 @@
 	position: relative !important;
 }
 
-.edit-delete a {
-	color: white;
-}
 
 .edit-photo select {
 
@@ -93,7 +90,9 @@
 .edit-btn {
 	background-color: rgb(0, 102, 255);
 }
-
+.edit-btn a{
+	color: white;
+}
 .add-btn {
 	background-color: #a09abc;
 }

@@ -1,13 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect, render
+from django.http import Http404, JsonResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from bmw_club_bg.common.forms import CommentForm, CreatePostForm
 from bmw_club_bg.common.models import Post
-from bmw_club_bg.groups.models import Group
+from bmw_club_bg.notifications.models import Notification
 
 
 class UserPostListView(LoginRequiredMixin, ListView):
@@ -16,7 +16,14 @@ class UserPostListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Post.objects.filter(groups__users=user).order_by('-date')
+        search_query = self.request.GET.get('search_query', None)
+
+        if search_query:
+            queryset = Post.objects.filter(author__username__icontains=search_query, groups__users=user).order_by(
+                '-date')
+        else:
+            queryset = Post.objects.filter(groups__users=user).order_by('-date')
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -26,27 +33,31 @@ class UserPostListView(LoginRequiredMixin, ListView):
 
         scroll_position = self.request.session.pop('scroll_position', 0)
         context['scroll_position'] = scroll_position
+
         if user.is_authenticated:
             liked_posts = user.liked_posts.all()
         context['liked_posts'] = liked_posts
 
         return context
 
-
 @login_required
-def like_post(request, pk):
+def like_post(request, pk, action):
+    print("Post ID:", pk)
+    print("Action:", action)
     post = get_object_or_404(Post, id=pk)
-    post.likes.add(request.user)
+    if action == 'like':
+        post.likes.add(request.user)
+    elif action == 'dislike':
+        post.likes.remove(request.user)
+    else:
+        return JsonResponse({'success': False})
 
-    return redirect(request.META["HTTP_REFERER"] + f'#{pk}')
+    if request.user != post.author:  # Avoid sending notification if the user liked their own post
+        notification_content = f"liked your post: {post.content}"
+        notification = Notification(user=post.author, user_like=request.user, content=notification_content)
+        notification.save()
 
-
-@login_required
-def dislike_post(request, pk):
-    post = get_object_or_404(Post, id=pk)
-    post.likes.remove(request.user)
-
-    return redirect(request.META["HTTP_REFERER"] + f'#{pk}')
+    return JsonResponse({'success': True, 'action': action})
 
 
 class PostDetailView(LoginRequiredMixin, DetailView):
@@ -99,3 +110,34 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
         return super().form_valid(form)
 
+
+class EditPostView(LoginRequiredMixin, UpdateView):
+    model = Post
+    template_name = 'posts/post-edit-page.html'
+    context_object_name = 'post'
+    fields = ['content', 'location', 'image_url']
+    success_url = reverse_lazy('home')
+
+    def get_object(self, queryset=None):
+        post = super().get_object(queryset)
+        if post.author != self.request.user:
+            # If the user is not the author of the post, return a 404 error
+            raise Http404
+        return post
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        # Perform any additional actions after the form is successfully validated
+        return response
+
+
+class DeletePostView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'posts/post-delete-page.html'
+    success_url = reverse_lazy('home')
+
+    def get_object(self, queryset=None):
+        post = super().get_object(queryset)
+        if post.author != self.request.user:
+            raise Http404("You are not allowed to delete this post.")
+        return post

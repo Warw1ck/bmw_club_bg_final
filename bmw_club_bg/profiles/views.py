@@ -1,12 +1,13 @@
 from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 
 # Create your views here.
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, DeleteView
 
 from bmw_club_bg.profiles.forms import ProfileUpdateForm
 from bmw_club_bg.profiles.models import Profile
@@ -57,6 +58,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         user = self.request.user
+        user.username = form.cleaned_data['username']
         user.first_name = form.cleaned_data['first_name']
         user.last_name = form.cleaned_data['last_name']
         user.email = form.cleaned_data['email']
@@ -73,3 +75,16 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         profile.save()
 
         return super().form_valid(form)
+
+
+class DeleteProfileView(LoginRequiredMixin, DeleteView):
+    model = User
+    template_name = 'profiles/delete-page.html'
+    success_url = reverse_lazy('home')  # Redirect to the home page after successful deletion
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset=queryset)
+        if not obj == self.request.user:
+            # If the user is not the owner of the profile, raise a 403 Forbidden error
+            raise PermissionDenied("You do not have permission to delete this profile.")
+        return obj
