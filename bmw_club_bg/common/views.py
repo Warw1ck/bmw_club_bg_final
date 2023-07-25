@@ -1,12 +1,14 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, request
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from bmw_club_bg.common.forms import CommentForm, CreatePostForm
-from bmw_club_bg.common.models import Post
+from bmw_club_bg.common.models import Post, Comment
 from bmw_club_bg.notifications.models import Notification
 
 
@@ -37,6 +39,11 @@ class UserPostListView(LoginRequiredMixin, ListView):
         if user.is_authenticated:
             liked_posts = user.liked_posts.all()
         context['liked_posts'] = liked_posts
+
+        # Add post URLs to the context
+        for post in context['object_list']:
+            post_url = self.request.build_absolute_uri(reverse('details_post', args=[post.pk]))
+            post.post_url = post_url
 
         return context
 
@@ -75,24 +82,63 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 
         return context
 
+    def get_comments_json(self, post_id):
+        post = get_object_or_404(Post, pk=post_id)
+        comments = Comment.objects.filter(post=post)
+        comments_data = [
+            {
+                'user': comment.user.username,
+                'comment': comment.comment,
+                'timestamp': comment.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+            }
+            for comment in comments
+        ]
+        return JsonResponse({'comments': comments_data})
+
 
 @login_required
 def add_comment(request, pk):
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.post_id = pk
-            comment.save()
-    return redirect('details_post', pk=pk)
+    post = get_object_or_404(Post, pk=pk)
 
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)  # Parse the JSON data
+            comment_text = data.get('comment')  # Get the comment from the JSON data
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+        if not comment_text:
+            return JsonResponse({'error': 'Comment is empty'}, status=400)
+
+        # Save the comment to the database
+        comment = Comment(user=request.user, post=post, comment=comment_text)
+        comment.save()
+
+        # Return the new comment data as JSON
+        return JsonResponse({
+            'user': {
+                'username': comment.user.username,
+                'profile': {
+                    'first_name': comment.user.profile.first_name,
+                    'last_name': comment.user.profile.last_name,
+                    'image': comment.user.profile.image.url if comment.user.profile.image else None,
+                    # Include other profile attributes as needed...
+                }},
+            'comment': comment.comment,
+            'timestamp': comment.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        })
+
+    # Return an empty JSON response for non-POST requests
+    return JsonResponse({})
 
 class CreatePostView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = CreatePostForm
     template_name = 'posts/post-add-page.html'
-    success_url = reverse_lazy('home')  # Redirect to the home page after successful creation
+
+    def get_success_url(self):
+        # Redirect to the details page of the newly created post
+        return reverse('details_post', args=[self.object.pk])
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -116,8 +162,9 @@ class EditPostView(LoginRequiredMixin, UpdateView):
     template_name = 'posts/post-edit-page.html'
     context_object_name = 'post'
     fields = ['content', 'location', 'image_url']
-    success_url = reverse_lazy('home')
-
+    def get_success_url(self):
+        # Redirect to the details page of the newly updated post
+        return reverse('details_post', args=[self.object.pk])
     def get_object(self, queryset=None):
         post = super().get_object(queryset)
         if post.author != self.request.user:

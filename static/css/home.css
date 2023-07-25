@@ -370,7 +370,7 @@ textarea.text::placeholder {
 }
 
 .postTime {
-    margin-left: 10px;
+    padding-left: 20px;
     font-weight: lighter;
     cursor: default;
     color: rgb(163, 163, 163);

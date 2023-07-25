@@ -6,7 +6,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView, UpdateView, DeleteView
 
 from bmw_club_bg.profiles.forms import ProfileUpdateForm
@@ -28,6 +28,11 @@ class ProfileDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         user = self.get_object()
         context['posts'] = user.authored_posts.all() # Retrieve all posts related to the user
+
+        for post in context['posts']:
+            post_url = self.request.build_absolute_uri(reverse('details_post', args=[post.pk]))
+            post.post_url = post_url
+
         return context
 
 
@@ -37,7 +42,10 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     template_name = 'profiles/profile-edit-page.html'
     form_class = ProfileUpdateForm
-    success_url = reverse_lazy('home')
+
+    def get_success_url(self):
+        # Redirect to the details page of the newly updated profile
+        return reverse('details_profile', args=[self.object.username])
 
     def get_object(self, queryset=None):
         return self.request.user

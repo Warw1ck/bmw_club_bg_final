@@ -46,6 +46,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # My middleware
+    'bmw_club_bg.middlewares.PreventLoginRegisterMiddleware',
+
 ]
 
 ROOT_URLCONF = 'bmw_club_bg.urls'
@@ -78,8 +82,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "bmw_club_bg",
-        "USER": "username",
-        "PASSWORD": "password",
+        "USER": "warwick",
+        "PASSWORD": "tigrite",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }

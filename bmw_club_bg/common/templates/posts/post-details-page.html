@@ -86,54 +86,24 @@
                         <div class="actionBtns">
                             <div class="left">
                                 <!-- Start Like Button -->
-                                <span class="heart">
-                                        {% if post in user.liked_posts.all %}
-                                            <a href="{% url 'dislike' post.pk %}?scroll_position={{ scroll_position }}">
-										<!-- if user has liked the photo -->
-                                        <svg style="color: red"
-                                             xmlns="http://www.w3.org/2000/svg"
-                                             width="24"
-                                             height="24"
-                                             fill="currentColor"
-                                             class="bi bi-heart-fill"
-                                             viewBox="0 0 16 16">
-                                            <!-- Coordinate path -->
-                                            <path fill-rule="evenodd"
-                                                  d="M8 1.314C12.438-3.248 23.534 4.735
-                                                  8 15-7.534 4.736 3.562-3.248 8 1.314z"
-                                                  fill="red">
+                                <span class="heart like-container" data-post-id="{{ object.pk }}">
+                                            <button class="like-button" data-post-id="{{ object.pk }}"
+                                                    data-action="{% if object in user.liked_posts.all %}dislike{% else %}like{% endif %}"
+                                                    style="background-color: transparent; border: none;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                     fill="currentColor"
+                                                     class="bi {% if object in user.liked_posts.all %}bi-heart-fill{% else %}bi-heart{% endif %}"
+                                                     viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd " id="heart-icon{{ object.id }}"
+                                                          d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"
+                                                          fill="{% if object in user.liked_posts.all %}red{% else %}black{% endif %}">
 
-                                            </path>
-                                        </svg>
-								</a>
-                                        {% else %}
-                                            <a href="{% url 'like' post.pk %}?scroll_position={{ scroll_position }}">
-                                        <svg aria-label="Like"
-                                             color="#262626"
-                                             fill="#262626"
-                                             height="24"
-                                             role="img"
-                                             viewBox="0 0 48 48"
-                                             width="24">
-                                        <path d="M34.6 6.1c5.7 0 10.4 5.2 10.4
-                                                    11.5 0 6.8-5.9 11-11.5 16S25 41.3 24
-                                                    41.9c-1.1-.7-4.7-4-9.5-8.3-5.7-5-11.5-9.2-11.5-16C3
-                                                    11.3 7.7 6.1 13.4 6.1c4.2 0 6.5 2 8.1 4.3
-                                                    1.9 2.6 2.2 3.9 2.5 3.9.3 0 .6-1.3 2.5-3.9
-                                                    1.6-2.3 3.9-4.3 8.1-4.3m0-3c-4.5 0-7.9
-                                                    1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 3.1
-                                                    0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3
-                                                    1.1 1.9 1.7l2.3 2c4.4 3.9 6.6 5.9 7.6 6.5.5.3
-                                                    1.1.5 1.6.5.6 0 1.1-.2 1.6-.5 1-.6 2.8-2.2
-                                                    7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6
-                                                    48 25 48 17.6c0-8-6-14.5-13.4-14.5z">
-                                        </path>
-                                    </svg>
-								</a>
-                                        {% endif %}
-								</span>
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                    </span>
 
-                                <a href="">
+                                <a onclick="copyToClipboard('{{ request.META.HTTP_REFERER }}#{{ post.pk }}')" >
                                     <svg aria-label="Share Post" class="_8-yf5 " color="#262626" fill="#262626"
                                          height="24" role="img" viewBox="0 0 48 48" width="24">
                                         <path d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3
@@ -145,7 +115,7 @@
                                         </path>
                                     </svg>
                                 </a>
-                                <a onclick="copyToClipboard('{{ request.META['HTTP_REFERER'] }}#{{ post.pk }}')">
+                                <a>
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 512 512">
                                         <path d="M123.6 391.3c12.9-9.4 29.6-11.8 44.6-6.4c26.5 9.6 56.2 15.1 87.8 15.1c124.7 0 208-80.5 208-160s-83.3-160-208-160S48 160.5 48 240c0 32 12.4 62.8 35.7 89.2c8.6 9.7 12.8 22.5 11.8 35.5c-1.4 18.1-5.7 34.7-11.3 49.4c17-7.9 31.1-16.7 39.4-22.7zM21.2 431.9c1.8-2.7 3.5-5.4 5.1-8.1c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208s-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6c-15.1 6.6-32.3 12.6-50.1 16.1c-.8 .2-1.6 .3-2.4 .5c-4.4 .8-8.7 1.5-13.2 1.9c-.2 0-.5 .1-.7 .1c-5.1 .5-10.2 .8-15.3 .8c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c4.1-4.2 7.8-8.7 11.3-13.5c1.7-2.3 3.3-4.6 4.8-6.9c.1-.2 .2-.3 .3-.5z"/>
                                     </svg>
@@ -157,50 +127,58 @@
 
                         <!-- Number of Likes per Photo -->
                         <div class="comment-like-info">
-                            <p class="likes">{{ post.likes.count }} likes</p>
-                            <p class="likes">{{ post.comments.count }} comments</p>
+                            <p class="likes"><strong id="numLike{{ post.pk }}">{{ post.likes.count }}</strong> likes
+                            </p>
+                            <p class="likes"><strong>{{ post.comments.count }}</strong> comments</p>
                         </div>
-                        {% for comment_object in object.comment_set.all %}
-                            <!-- Start Comments Section -->
-                            <div class="comments">
-                                <div class="top">
-                                    <div class="userDetails">
-                                        <div class="comment-data">
-                                            <div class="profilepic">
-                                                <div class="profile_img">
-                                                    <div class="image">
-                                                        <!-- User Profile Image -->
-                                                        {% if comment_object.user.profile.image %}
-                                                            <img src="/media/{{ comment_object.user.profile.image }}"
-                                                                 alt="img8">
-                                                        {% else %}
-                                                            <img src="{% static 'images/person.png' %}" alt="img8">
-                                                        {% endif %}
+
+                        <div id="commentsContainer">
+                            {% for comment_object in object.comment_set.all %}
+                                <div class="comments" id="comment{{ comment_object.pk }}">
+                                    <div class="top">
+                                        <div class="userDetails">
+                                            <div class="comment-data">
+                                                <div class="profilepic">
+                                                    <div class="profile_img">
+                                                        <div class="image">
+                                                            <!-- User Profile Image -->
+                                                            <a href="{% url 'details_profile' username=comment_object.user.username %}">
+                                                                {% if comment_object.user.profile.image %}
+                                                                    <img src="/media/{{ comment_object.user.profile.image }}"
+                                                                         alt="img8">
+                                                                {% else %}
+                                                                    <img src="{% static 'images/person.png' %}"
+                                                                         alt="img8">
+                                                                {% endif %}
+                                                            </a>
+
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <p>
+                                                    <!-- Link to User Profile Details Page-->
+                                                    <!-- User First and/or Last Name or username-->
+                                                    <a href="{% url 'details_profile' username=comment_object.user.username %}"
+                                                       style="font-weight: bold ">
+                                                        {% if  comment_object.user.profile.first_name and comment_object.user.profile.last_name %}
+                                                            {{ comment_object.user.profile.first_name }}
+                                                            {{ comment_object.user.profile.last_name }}
+                                                        {% else %}
+                                                            {{ comment_object.user.username }}
+                                                        {% endif %}
+                                                    </a>
+                                                    <!-- User Comment -->
+                                                    {{ comment_object.comment }}
+                                                </p>
                                             </div>
-                                            <p>
-                                                <!-- Link to User Profile Details Page-->
-                                                <!-- User First and/or Last Name or username-->
-                                                <a href="{% url 'details_profile' username=comment_object.user.username %}"
-                                                   style="font-weight: bold ">
-                                                    {% if  comment_object.user.profile.first_name and comment_object.user.profile.last_name %}
-                                                        {{ comment_object.user.profile.first_name }}
-                                                        {{ comment_object.user.profile.last_name }}
-                                                    {% else %}
-                                                        {{ comment_object.user.username }}
-                                                    {% endif %}
-                                                </a>
-                                                <!-- User Comment -->
-                                                {{ comment_object.comment }}
-                                            </p>
+                                            <span>{{ comment_object.timestamp }}</span>
                                         </div>
-                                        <span>{{ comment.timestamp }}</span>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- End Comments Section -->
-                        {% endfor %}
+                                <!-- End Comments Section -->
+                            {% endfor %}
+
+                        </div>
                     </div>
 
                     <!-- Start Add Comments Section -->
@@ -212,11 +190,10 @@
                         </div>
 
                         <!-- Start Add Comments Form -->
-                        <form method="post" action="{% url 'add_comment' post.id %}">
-                            {{ comment_form }}
+                        <form id="commentForm" data-url="{% url 'add_comment' object.pk %}">
                             {% csrf_token %}
-                            <!-- Post Comments Button -->
-                            <button type="submit">Post</button>
+                            <textarea name="comment" id="commentInput" placeholder="Your comment" required></textarea>
+                            <button id="postCommentButton">Post</button>
                         </form>
                         <!-- End Add Comments Form -->
 
@@ -224,7 +201,6 @@
                     <!-- End Add Comments Section -->
 
                 </div>
-                <!-- End Pet Photo Post Section -->
 
             </div>
         </div>

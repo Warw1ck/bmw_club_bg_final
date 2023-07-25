@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from bmw_club_bg.common.models import Post
@@ -58,6 +58,10 @@ class GroupDetailView(DetailView):
         else:
             context['posts'] = Post.objects.filter(groups=group).order_by('-date')
 
+        for post in context['posts']:
+            post_url = self.request.build_absolute_uri(reverse('details_post', args=[post.pk]))
+            post.post_url = post_url
+
         return context
 
 
@@ -65,7 +69,10 @@ class CreateGroupView(LoginRequiredMixin, CreateView):
     model = Group
     form_class = CreateGroupForm
     template_name = 'groups/group-add-page.html'
-    success_url = reverse_lazy('groups')
+
+    def get_success_url(self):
+        # Redirect to the details page of the newly created group
+        return reverse('group_details', args=[self.object.pk])
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
@@ -82,6 +89,10 @@ class UpdateGroupView(LoginRequiredMixin, UpdateView):
     form_class = UpdateGroupForm
     template_name = 'groups/group-edit-page.html'
     success_url = reverse_lazy('groups')
+
+    def get_success_url(self):
+        # Redirect to the details page of the updated created group
+        return reverse('group_details', args=[self.object.pk])
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset=queryset)
