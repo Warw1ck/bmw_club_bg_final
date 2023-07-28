@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
     <main>
         <div class="container">
@@ -13,8 +14,13 @@
                                         <div class="profilepic">
                                             <div class="profile_img">
                                                 <div class="image">
-                                                    <img src="/media/{{ notification.user_like.profile.image }}"
-                                                         alt="img8">
+                                                    {% if notification.user_like.profile.image %}
+                                                        <img src="/media/{{ notification.user_like.profile.image }}"
+                                                             alt="img8">
+                                                    {% else %}
+                                                        <img src="{% static 'images/person.png' %}"
+                                                             alt="img8">
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>
@@ -51,6 +57,26 @@
 
                     </div>
                 {% endfor %}
+
+                {% if is_paginated %}
+                    <div class="pagination">
+                <span class="step-links">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">next</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+                    </div>
+                {% endif %}
 
 
             </div>

@@ -175,11 +175,12 @@
 }
 
 .step-links {
-    text-shadow: 1px 1px #4b4848;
+    font-weight: bold;
 }
 
+
 .step-links a:hover {
-    text-shadow: none;
+    color: #1d92ff;
 }
 .col-9 .card .top .profile-details h3 span{
     font-size: 1em!important;
