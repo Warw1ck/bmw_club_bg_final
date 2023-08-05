@@ -19,7 +19,7 @@ BMW Club BG is a Django-based web application that brings together BMW enthusias
 ## Screenshots
 Here are some screenshots of the different pages in the BMW Club BG application:
 
-##Authentication Pages
+Authentication Pages
 ![Screenshot_15](https://github.com/Warw1ck/bmw_club_bg_final/assets/114092919/5fa1d30b-f4c7-41ea-83c0-e45ed7ba5d92)
 ![Screenshot_16](https://github.com/Warw1ck/bmw_club_bg_final/assets/114092919/821f4449-ae9f-4138-8fa0-b550f97fb81a)
 
