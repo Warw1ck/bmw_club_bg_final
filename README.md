@@ -1,9 +1,9 @@
 # bmw_club_bg_final
 BMW Club BG
-Project Status
-Python Version
-Django Version
-License
+[![Project Status](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/your-username/bmw-club-bg)
+[![Python Version](https://img.shields.io/badge/python-3.8%20%7C%203.9-blue.svg)](https://www.python.org/downloads/)
+[![Django Version](https://img.shields.io/badge/django-3.2-blue.svg)](https://www.djangoproject.com/download/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 Description
 BMW Club BG is a Django-based web application that brings together BMW enthusiasts in Bulgaria. The platform provides a space for BMW lovers to connect, share their passion, and interact with each other through groups and posts related to BMW cars.
