@@ -3,6 +3,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.8%20%7C%203.9-blue.svg)](https://www.python.org/downloads/)
 [![Django Version](https://img.shields.io/badge/django-3.2-blue.svg)](https://www.djangoproject.com/download/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+![e30-big-logo](https://github.com/Warw1ck/bmw_club_bg_final/assets/114092919/7f79b629-0bcf-43f6-b9e8-6329f7e3ee0d)
 
 ## Description
 BMW Club BG is a Django-based web application that brings together BMW enthusiasts in Bulgaria. The platform provides a space for BMW fans to connect, share their passion, and interact with each other through groups and posts related to BMW cars.
@@ -20,8 +21,8 @@ BMW Club BG is a Django-based web application that brings together BMW enthusias
 Here are some screenshots of the different pages in the BMW Club BG application:
 
 ##Authentication Pages
-![Screenshot_16](https://github.com/Warw1ck/bmw_club_bg_final/assets/114092919/821f4449-ae9f-4138-8fa0-b550f97fb81a)
 ![Screenshot_15](https://github.com/Warw1ck/bmw_club_bg_final/assets/114092919/5fa1d30b-f4c7-41ea-83c0-e45ed7ba5d92)
+![Screenshot_16](https://github.com/Warw1ck/bmw_club_bg_final/assets/114092919/821f4449-ae9f-4138-8fa0-b550f97fb81a)
 
 Home Page
 ![Screenshot_1](https://github.com/Warw1ck/bmw_club_bg_final/assets/114092919/e0fcbabf-20d7-4088-bc76-7592dc9e5e4d)
