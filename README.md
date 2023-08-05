@@ -1,4 +1,3 @@
-# bmw_club_bg_final
 # BMW Club BG
 [![Project Status](https://img.shields.io/badge/status-active-brightgreen.svg)](https://github.com/your-username/bmw-club-bg)
 [![Python Version](https://img.shields.io/badge/python-3.8%20%7C%203.9-blue.svg)](https://www.python.org/downloads/)
