@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     # My applications
     'bmw_club_bg.accounts',
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
     'bmw_club_bg.groups',
     'bmw_club_bg.common',
     'bmw_club_bg.notifications',
+
 
 ]
 
@@ -82,8 +84,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "bmw_club_bg",
-        "USER": "username",
-        "PASSWORD": "password",
+        "USER": "warwick",
+        "PASSWORD": "tigrite",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }

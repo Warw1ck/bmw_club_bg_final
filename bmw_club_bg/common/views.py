@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from bmw_club_bg.common.forms import CommentForm, CreatePostForm
+from bmw_club_bg.common.forms import CreatePostForm
 from bmw_club_bg.common.models import Post, Comment
 from bmw_club_bg.notifications.models import Notification
 
@@ -49,8 +49,6 @@ class UserPostListView(LoginRequiredMixin, ListView):
 
 @login_required
 def like_post(request, pk, action):
-    print("Post ID:", pk)
-    print("Action:", action)
     post = get_object_or_404(Post, id=pk)
     if action == 'like':
         post.likes.add(request.user)
@@ -78,7 +76,6 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         if user.is_authenticated:
             liked_posts = user.liked_posts.all()
         context['liked_posts'] = liked_posts
-        context['comment_form'] = CommentForm()
 
         return context
 

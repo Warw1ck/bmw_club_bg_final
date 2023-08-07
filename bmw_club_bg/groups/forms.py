@@ -18,7 +18,7 @@ class CreateGroupForm(forms.ModelForm):
 class UpdateGroupForm(forms.ModelForm):
     class Meta:
         model = Group
-        fields = ['name', 'description', 'image']  # Add other fields as needed
+        fields = ['name', 'description', 'image']
 
         labels = {
             'name': 'Group Name',

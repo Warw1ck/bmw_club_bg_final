@@ -60,6 +60,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         form.initial['first_name'] = profile.first_name
         form.initial['last_name'] = profile.last_name
         form.initial['birthday'] = profile.birthday
+        form.initial['image'] = profile.image
         form.initial['gender'] = profile.gender
 
         return form

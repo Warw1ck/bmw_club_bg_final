@@ -5,17 +5,7 @@ from bmw_club_bg.common.models import Comment, Post
 from bmw_club_bg.groups.models import Group
 
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ['comment']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['comment'].widget.attrs['placeholder'] = 'Comment...'
-
-
-class CreatePostForm(forms.ModelForm):
+class BasePostForm(forms.ModelForm):
     group = forms.ModelChoiceField(queryset=None)
 
     class Meta:
@@ -31,6 +21,9 @@ class CreatePostForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'rows': 6}),  # Set the number of rows for the textarea
         }
 
+
+class CreatePostForm(BasePostForm):
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['group'].queryset = Group.objects.filter(users = user)
+        self.fields['group'].queryset = Group.objects.filter(users=user)
+

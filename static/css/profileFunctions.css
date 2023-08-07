@@ -145,8 +145,17 @@ label {
 .edit-photo input, select, .edit-photo textarea, .label-input input {
     width: 300px !important;
 }
+#image-clear_id{
+    width: 50px !important;
+}
 .label-input {
     display: flex;
+
+}
+
+.profile-input label{
+    display: block !important;
+
 }
 
 .label-input:first-of-type {

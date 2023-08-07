@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     ${data.comment}
                                 </p>
                             </div>
-                            <span>${data.timestamp}</span>
+                            <span>now</span>
                         </div>
                     </div>
                 </div>
