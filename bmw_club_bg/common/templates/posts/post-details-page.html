@@ -44,16 +44,16 @@
                                 <h5 class="postTime">{{ post.date|date:"d/m/Y" }}</h5>
 
                             </h3>
-                            {% if object.author.pk == request.user.id %}
+                            {% if post.author == now_user or group_chef == now_user%}
+
 
                                 <div class="edit-delete-btns">
-                                    <!-- Link to Edit Pet Photo Page -->
+                                {% if post.author == now_user %}
                                     <a href="{% url 'edit_post' object.pk %}">
                                         <img class="edit-img" src="{% static 'images/edit-pen-icon-6.jpg' %}"
                                              alt="edit button">
                                     </a>
-
-                                    <!-- Link to Delete Pet Photo Page -->
+                                {% endif %}
                                     <a href="{% url 'delete_post' object.pk %}">
                                         <img class="bin-img" src="{% static 'images/icon-remove-22.jpg' %}"
                                              alt="bin button">
@@ -206,4 +206,9 @@
         </div>
 
     </main>
+
+    <script src={% static 'base-js/copy-to-click-board.js' %}></script>
+    <script src={% static 'base-js/like-and-unlike-button.js' %}></script>
+    <script src={% static 'base-js/comment-functionality.js' %}></script>
+
 {% endblock %}

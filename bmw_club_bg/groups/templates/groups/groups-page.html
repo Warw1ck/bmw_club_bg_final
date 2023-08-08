@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
     <main>
         <div class="container">
@@ -122,4 +123,9 @@
         <!-- You can add pagination links if needed -->
 
     </main>
+    <script>
+    window.csrfToken = '{{ csrf_token }}';
+    </script>
+    <script src={% static 'base-js/join-and-unjoin-button.js' %}></script>
+
 {% endblock %}

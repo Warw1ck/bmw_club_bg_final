@@ -82,6 +82,11 @@
             </div>
         </div>
     </main>
+    <script>
+    window.csrfToken = '{{ csrf_token }}';
+    </script>
+    <script src={% static 'base-js/notification-clear-button.js' %}></script>
+
 
 
 {% endblock %}

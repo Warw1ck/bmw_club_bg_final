@@ -3,6 +3,7 @@
 {% block content %}
     <!-- Starts Main Section -->
     <main>
+    {% if object_list %}
         <div class="container">
             <div class="col-9">
 
@@ -137,5 +138,25 @@
 
             </div>
         </div>
+    {% else %}
+    <div class="container" style="flex-direction: column; align-items: center;">
+        <img src="/static/images/432987.png" alt="">
+        <h1>No Posts</h1>
+       <h1>
+        Join some
+        <a href="{% url 'groups' %}" style="color: #84dbff;">
+             Groups!
+        </a>
+
+       </h1>
+    </div>
+    {% endif %}
     </main>
+    <script>
+    window.csrfToken = '{{ csrf_token }}';
+
+    </script>
+    <script src={% static 'base-js/copy-to-click-board.js' %}></script>
+    <script src={% static 'base-js/like-and-unlike-button.js' %}></script>
+
 {% endblock %}

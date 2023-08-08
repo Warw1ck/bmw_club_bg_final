@@ -163,8 +163,7 @@
                                 </h3>
                             </div>
                         </div>
-                        <!-- End User Details and Image Location -->
-                        <!-- Photo description -->
+
                         <div class="decription">
                             <p class="pet-details">{{ post.content }}</p>
                             <a style="color: rgb(163, 163, 163); font-weight: 700;;"
@@ -244,5 +243,11 @@
             </div>
         </div>
     </main>
-    <!-- End Main Section -->
+    <script>
+    window.csrfToken = '{{ csrf_token }}';
+
+    </script>
+    <script src={% static 'base-js/copy-to-click-board.js' %}></script>
+    <script src={% static 'base-js/like-and-unlike-button.js' %}></script>
+
 {% endblock %}

@@ -76,6 +76,8 @@ class PostDetailView(LoginRequiredMixin, DetailView):
         if user.is_authenticated:
             liked_posts = user.liked_posts.all()
         context['liked_posts'] = liked_posts
+        context['now_user'] = user
+        context['group_chef'] = self.object.groups.first().created_by
 
         return context
 
@@ -86,7 +88,7 @@ class PostDetailView(LoginRequiredMixin, DetailView):
             {
                 'user': comment.user.username,
                 'comment': comment.comment,
-                'timestamp': comment.timestamp.strftime('%Y-%m-%d %H:%M:%S')
+                'timestamp': comment.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
             }
             for comment in comments
         ]
@@ -121,6 +123,7 @@ def add_comment(request, pk):
                     'image': comment.user.profile.image.url if comment.user.profile.image else None,
                     # Include other profile attributes as needed...
                 }},
+
             'comment': comment.comment,
             'timestamp': comment.timestamp.strftime('%Y-%m-%d %H:%M:%S')
         })
@@ -182,6 +185,6 @@ class DeletePostView(LoginRequiredMixin, DeleteView):
 
     def get_object(self, queryset=None):
         post = super().get_object(queryset)
-        if post.author != self.request.user:
+        if post.author != self.request.user and self.request.user != post.groups.first().created_by:
             raise Http404("You are not allowed to delete this post.")
         return post

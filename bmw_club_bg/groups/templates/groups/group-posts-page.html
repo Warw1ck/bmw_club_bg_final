@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
     <!-- Starts Main Section -->
     <main>
@@ -22,13 +23,11 @@
                                 <div>
                                     <div class="edit-delete-btns">
                                         {% if user == group.created_by %}
-                                            <!-- Link to Edit Pet Photo Page -->
                                             <a href="{% url 'group_edit' group.pk %}">
                                                 <img class="edit-img" src="/static/images/edit-pen-icon-6.jpg"
                                                      alt="edit button">
                                             </a>
 
-                                            <!-- Link to Delete Pet Photo Page -->
                                             <a href="{% url 'group_delete' group.pk %}">
                                                 <img class="bin-img" src="/static/images/icon-remove-22.jpg"
                                                      alt="bin button">
@@ -36,15 +35,11 @@
                                         {% endif %}
                                     </div>
                                     <h3>
-                                        <!-- Link to Group Profile Page -->
                                         <a href="#" class="group-title">
-                                            <!-- if user has first name and last name -->
 
                                             {{ group.name }}
 
 
-                                            <!-- else -->
-                                            <!-- show user username -->
 
                                         </a>
                                             <span class="postTime">.<strong id="members{{ group.pk }}">{{ group.users.count }}</strong> Members</span>
@@ -216,4 +211,13 @@
             </div>
         </div>
     </main>
+    <script>
+    window.csrfToken = '{{ csrf_token }}';
+    </script>
+
+    <script src={% static 'base-js/copy-to-click-board.js' %}></script>
+    <script src={% static 'base-js/like-and-unlike-button.js' %}></script>
+    <script src={% static 'base-js/join-and-unjoin-button.js' %}></script>
+
+
 {% endblock %}
