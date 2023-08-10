@@ -47,6 +47,8 @@ class UserPostListView(LoginRequiredMixin, ListView):
 
         return context
 
+
+
 @login_required
 def like_post(request, pk, action):
     post = get_object_or_404(Post, id=pk)
