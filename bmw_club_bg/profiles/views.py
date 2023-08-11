@@ -13,7 +13,7 @@ from bmw_club_bg.profiles.forms import ProfileUpdateForm
 from bmw_club_bg.profiles.models import Profile
 
 
-class ProfileDetailView(DetailView):
+class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = User
     template_name = 'profiles/profile-details-page.html'
     context_object_name = 'profile'

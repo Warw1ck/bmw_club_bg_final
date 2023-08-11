@@ -157,7 +157,6 @@ class DeletePostViewTest(TestCase):
 class EditPostViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpassword')
-        self.factory = RequestFactory()
         self.post = Post.objects.create(
             author=self.user,
             content='Original content',
