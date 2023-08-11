@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
     async function addComment(comment) {
-        const postId = commentsContainer.dataset.postId;
         const url = `comment/`;
         const response = await fetch(url, {
             method: 'POST',

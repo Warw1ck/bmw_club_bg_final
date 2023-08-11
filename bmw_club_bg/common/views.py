@@ -33,8 +33,6 @@ class UserPostListView(LoginRequiredMixin, ListView):
         liked_posts = []
         user = self.request.user
 
-        scroll_position = self.request.session.pop('scroll_position', 0)
-        context['scroll_position'] = scroll_position
 
         if user.is_authenticated:
             liked_posts = user.liked_posts.all()
@@ -83,18 +81,6 @@ class PostDetailView(LoginRequiredMixin, DetailView):
 
         return context
 
-    def get_comments_json(self, post_id):
-        post = get_object_or_404(Post, pk=post_id)
-        comments = Comment.objects.filter(post=post)
-        comments_data = [
-            {
-                'user': comment.user.username,
-                'comment': comment.comment,
-                'timestamp': comment.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-            }
-            for comment in comments
-        ]
-        return JsonResponse({'comments': comments_data})
 
 
 @login_required
@@ -153,7 +139,6 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         post.save()  # Save the post to generate the post ID
 
         group_data = form.cleaned_data.get('group')
-        print(group_data)
         post.groups.set([group_data])
 
         return super().form_valid(form)
@@ -164,9 +149,11 @@ class EditPostView(LoginRequiredMixin, UpdateView):
     template_name = 'posts/post-edit-page.html'
     context_object_name = 'post'
     fields = ['content', 'location', 'image_url']
+
     def get_success_url(self):
         # Redirect to the details page of the newly updated post
         return reverse('details_post', args=[self.object.pk])
+
     def get_object(self, queryset=None):
         post = super().get_object(queryset)
         if post.author != self.request.user:

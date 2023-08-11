@@ -64,7 +64,7 @@
                         <div class="decription">
                             <p class="pet-details">{{ post.content }}</p>
                             <a style="color: rgb(163, 163, 163); font-weight: 700;;"
-                               href="{% url 'details_post' post.pk %}?scroll_position={{ scroll_position }}">
+                               href="{% url 'details_post' post.pk %}">
                                 See More
                             </a>
                             {% for group in post.groups.all %}

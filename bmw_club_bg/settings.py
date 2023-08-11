@@ -88,7 +88,15 @@ DATABASES = {
         "PASSWORD": "tigrite",
         "HOST": "127.0.0.1",
         "PORT": "5432",
-    }
+    },
+    "test": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "bmw_club_bg",
+            "USER": "warwick",
+            "PASSWORD": "tigrite",
+            "HOST": "127.0.0.1",
+            "PORT": "5432",
+        }
 }
 
 
