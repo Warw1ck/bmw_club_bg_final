@@ -76,6 +76,129 @@ class PostDetailsViewTest(TestCase):
         self.assertRedirects(response, f'/authentication/login?next=/')
 
 
+class CreatePostViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.group1 = Group.objects.create(name='Group 1')
+        self.group1.users.set([self.user])
+        self.group2 = Group.objects.create(name='Group 2')
+        self.group2.users.set([self.user])
+
+
+    def test_create_post_view(self):
+        self.client.force_login(self.user)
+        url = reverse('add_post')
+
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'posts/post-add-page.html')
+
+    def test_create_post_success(self):
+        self.client.login(username='testuser', password='testpassword')
+        url = reverse('add_post')
+
+        response = self.client.post(url, {
+            'content': 'Test content',
+            'location': 'Test location',
+            'image_url': 'https://example.com/image.jpg',
+            'group': self.group1.id,
+        })
+
+        self.assertEqual(response.status_code, 302)  # Expecting a redirect after successful form submission
+
+        created_post = Post.objects.first()
+        self.assertEqual(created_post.author, self.user)
+        self.assertEqual(created_post.content, 'Test content')
+        self.assertEqual(created_post.location, 'Test location')
+        self.assertEqual(created_post.image_url, 'https://example.com/image.jpg')
+        self.assertEqual(created_post.groups.first(), self.group1)
+
+class DeletePostViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.group1 = Group.objects.create(name='Group 1')
+        self.group1.users.set([self.user])
+        self.group2 = Group.objects.create(name='Group 2')
+        self.group2.users.set([self.user])
+        self.post = Post.objects.create(
+            author=self.user,
+            content='Test content',
+            image_url='https://example.com/image.jpg',
+            location='Test Location',
+        )
+        self.post.groups.set([self.group1])
+
+    def test_delete_post_view_author(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('delete_post', args=[self.post.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'posts/post-delete-page.html')
+
+    def test_delete_post_view_not_author_not_group_creator(self):
+        other_user = User.objects.create_user(username='otheruser', password='testpassword')
+        self.client.login(username='otheruser', password='testpassword')
+        response = self.client.get(reverse('delete_post', args=[self.post.pk]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_delete_post_view_group_creator(self):
+        other_user = User.objects.create_user(username='otheruser', password='testpassword')
+        self.group1.created_by = other_user
+        self.group1.save()
+        self.client.login(username='otheruser', password='testpassword')
+        response = self.client.get(reverse('delete_post', args=[self.post.pk]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_post_view_post_not_found(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('delete_post', args=[999]))  # Invalid post id
+        self.assertEqual(response.status_code, 404)
+
+
+class EditPostViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.factory = RequestFactory()
+        self.post = Post.objects.create(
+            author=self.user,
+            content='Original content',
+            image_url='https://example.com/image.jpg',
+            location='Original Location',
+        )
+        self.group1 = Group.objects.create(name='Group 1')
+        self.group1.users.set([self.user])
+        self.group1.posts.set([self.post])
+
+    def test_edit_post_view_author(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('edit_post', args=[self.post.pk]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'posts/post-edit-page.html')
+
+    def test_edit_post_view_not_author(self):
+        other_user = User.objects.create_user(username='otheruser', password='testpassword')
+        self.client.login(username='otheruser', password='testpassword')
+        response = self.client.get(reverse('edit_post', args=[self.post.pk]))
+        self.assertEqual(response.status_code, 404)
+
+    def test_edit_post_view_post_not_found(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('edit_post', args=[999]))  # Invalid post id
+        self.assertEqual(response.status_code, 404)
+
+    def test_edit_post_form_valid(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post(
+            reverse('edit_post', args=[self.post.pk]),
+            data={'content': 'Updated content', 'location': 'Updated Location', 'image_url': 'https://example.com/updated.jpg'}
+        )
+        self.assertEqual(response.status_code, 302)  # Redirect after successful edit
+        self.assertRedirects(response, reverse('details_post', args=[self.post.pk]))
+
+        # Verify that the post was actually updated
+        updated_post = Post.objects.get(pk=self.post.pk)
+        self.assertEqual(updated_post.content, 'Updated content')
+        self.assertEqual(updated_post.location, 'Updated Location')
+        self.assertEqual(updated_post.image_url, 'https://example.com/updated.jpg')
 
 class LikePostViewTest(TestCase):
     def setUp(self):

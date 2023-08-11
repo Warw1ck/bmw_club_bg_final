@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages import get_messages
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -11,7 +12,7 @@ from bmw_club_bg.groups.forms import CreateGroupForm, UpdateGroupForm
 from bmw_club_bg.groups.models import Group
 
 
-class GroupListView(ListView):
+class GroupListView(ListView, LoginRequiredMixin):
     model = Group
     template_name = 'groups/groups-page.html'
     paginate_by = 5  # Number of groups per page
@@ -28,7 +29,6 @@ class GroupListView(ListView):
 
 @login_required
 def join_group(request, pk):
-    print(pk)
     group = get_object_or_404(Group, pk=pk)
     group.users.add(request.user)
     messages.success(request, f"You have joined the group: {group.name}")
@@ -36,14 +36,13 @@ def join_group(request, pk):
 
 @login_required
 def leave_group(request, pk):
-    print(pk)
     group = get_object_or_404(Group, pk=pk)
     group.users.remove(request.user)
     messages.success(request, f"You have left the group: {group.name}")
     return redirect('groups')
 
 
-class GroupDetailView(DetailView):
+class GroupDetailView(LoginRequiredMixin, DetailView):
     model = Group
     template_name = 'groups/group-posts-page.html'
     context_object_name = 'group'
@@ -114,3 +113,5 @@ class DeleteGroupView(LoginRequiredMixin, DeleteView):
             # If the user is not the creator of the group, raise a 403 Forbidden error
             raise PermissionDenied("You do not have permission to delete this group.")
         return obj
+
+

@@ -1,7 +1,6 @@
 from django.urls import path
 
 from bmw_club_bg.groups import views
-from bmw_club_bg.groups.views import GroupListView, GroupDetailView, CreateGroupView, UpdateGroupView, DeleteGroupView
 
 urlpatterns = [
     path('', views.GroupListView.as_view(), name='groups'),

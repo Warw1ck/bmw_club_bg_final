@@ -3,7 +3,6 @@ from django import forms
 from bmw_club_bg.groups.models import Group
 
 
-
 class CreateGroupForm(forms.ModelForm):
     class Meta:
         model = Group
