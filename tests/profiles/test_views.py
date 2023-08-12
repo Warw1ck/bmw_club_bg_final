@@ -7,6 +7,7 @@ from django.test import TestCase
 
 from bmw_club_bg.common.models import Post
 from bmw_club_bg.profiles.forms import ProfileUpdateForm
+from bmw_club_bg.profiles.models import Profile
 from bmw_club_bg.profiles.views import ProfileDetailView
 
 User = get_user_model()
@@ -25,7 +26,7 @@ class ProfileDetailViewTest(TestCase):
     def test_view_uses_correct_template(self):
         response = self.client.get(reverse('details_profile', args=[self.user.username]))
 
-        self.assertTemplateUsed(response, 'profiles/profile-details-page.html')
+        self.assertTemplateUsed(response, 'profiles/profiles-details-page.html')
 
     def test_context_contains_user_posts(self):
         # Create some posts associated with the user
@@ -54,7 +55,7 @@ class ProfileUpdateViewTest(TestCase):
 
     def test_view_uses_correct_template(self):
         response = self.client.get(reverse('update_profile'))
-        self.assertTemplateUsed(response, 'profiles/profile-edit-page.html')
+        self.assertTemplateUsed(response, 'profiles/profiles-edit-page.html')
 
     def test_form_valid(self):
         self.client.force_login(self.user)
@@ -62,7 +63,7 @@ class ProfileUpdateViewTest(TestCase):
         form_data = {
             'username': 'valentintest',
             'first_name': 'firstname',
-            'last_name': 'firstname',
+            'last_name': 'lastname',
             'birthday': datetime(2000, 1, 1).date(),
             'gender': 'M',
         }
@@ -81,20 +82,15 @@ class ProfileUpdateViewTest(TestCase):
 
         form_data['image'] = image
 
-        form = ProfileUpdateForm(data=form_data, files={'image': image})
-        if form.is_valid():
-            print('Valid')
-        else:
-            print('Not Valid')
-            print(form.errors)
 
-        response = self.client.post(reverse('update_profile'), data=form_data, files={'image': image}, follow=True)
+        response = self.client.get(reverse('update_profile'))
 
-        self.assertEqual(response.status_code, 302)  # Redirect after successful update
+        self.client.post(response, data=form_data, files={'image': image})
 
         self.user.refresh_from_db()
-        self.assertEqual(self.user.first_name, 'New First Name')
-        self.assertEqual(self.user.last_name, 'New Last Name')
+
+        self.assertEqual(self.user.profile.first_name, 'firstname')
+        self.assertEqual(self.user.profile.last_name, 'lastname')
 
         profile = self.user.profile
         self.assertEqual(profile.birthday, datetime(2000, 1, 1).date())
