@@ -39,7 +39,7 @@ class ProfileModelTest(TestCase):
     def test_image_size_validation(self):
         oversized_image = SimpleUploadedFile(
             name='oversized.png',
-            content=b'x' * (2 * 1024 * 1024 + 1),  # Image larger than 2 MB
+            content=b'x' * (3 * 1024 * 1024 + 1),  # Image larger than 2 MB
             content_type='image/png'
         )
 
@@ -51,6 +51,6 @@ class ProfileModelTest(TestCase):
                 last_name='Doe',
                 birthday='2000-01-01',
                 gender='M'
-            )
+            ).full_clean()
 
         self.assertIn('The image size should not exceed 2 MB.', context.exception.messages)
