@@ -15,10 +15,6 @@ class NotificationListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Notification.objects.filter(user=self.request.user, is_read=False).order_by('-timestamp')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Mark all notifications as read when the user views the notification list
-        return context
 
 
 @login_required
